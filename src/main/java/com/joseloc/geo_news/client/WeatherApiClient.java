@@ -1,10 +1,15 @@
 package com.joseloc.geo_news.client;
 
+import com.joseloc.geo_news.config.WebClientProperties;
 import com.joseloc.geo_news.dto.WeatherInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
+import reactor.util.retry.Retry;
+
+import java.time.Duration;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -12,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WeatherApiClient {
 
     private final WebClient weatherWebClient;
+    private final WebClientProperties props;
 
     public WeatherInfo getWeather( String latitude, String longitude ) {
 
@@ -25,6 +31,10 @@ public class WeatherApiClient {
                         .build( ) )
                 .retrieve( )
                 .bodyToMono( WeatherInfo.class )
+                .retryWhen(
+                        Retry.backoff( 3, Duration.ofSeconds( 1 ) )
+                                .filter( throwable -> throwable instanceof WebClientRequestException )
+                )
                 .block( );
     }
 }

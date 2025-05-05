@@ -1,23 +1,27 @@
 package com.joseloc.geo_news.config;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.netty.http.client.HttpClient;
 
-import java.util.Collections;
+import java.time.Duration;
 
 @Configuration
+@EnableConfigurationProperties( WebClientProperties.class )
 public class WebClientConfig {
 
     @Bean
-    public WebClient weatherWebClient( WebClient.Builder builder ) {
+    public WebClient weatherWebClient( WebClientProperties props ) {
+        HttpClient httpClient = HttpClient.create( )
+                .responseTimeout( Duration.ofMillis( props.getTimeout( ) ) );
         return WebClient.builder( )
-                .baseUrl( "https://api.open-meteo.com/v1/forecast" )
-                .defaultCookie( "cookieKey", "cookieValue" )
-                .defaultHeader( HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE )
-                .defaultUriVariables( Collections.singletonMap( "url", "http://localhost:8080" ) )
+                .baseUrl( props.getBaseUrl( ) )
+                .clientConnector( new ReactorClientHttpConnector( httpClient ) )
+                //.defaultHeaders(headers -> props.getHeaders().forEach(headers::add))
+                //.defaultCookies(cookies -> props.getCookies().forEach(cookies::add))
                 .build( );
     }
 }

@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: geo-news
+webclient:
+  base-url: https://api.open-meteo.com/v1/forecast
+  timeout: 3000
+  #headers:
+    #Authorization: "Bearer mytoken123"
+    #Content-Type: "application/json"
+  #cookies:
+    #sessionId: "abc123"
