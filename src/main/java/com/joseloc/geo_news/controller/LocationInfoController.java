@@ -1,6 +1,6 @@
 package com.joseloc.geo_news.controller;
 
-import com.joseloc.geo_news.dto.WeatherInfo;
+import com.joseloc.geo_news.dto.WeatherInfoDTO;
 import com.joseloc.geo_news.service.WeatherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +13,8 @@ public class LocationInfoController {
 
     private final WeatherService weatherService;
 
-    @GetMapping( "/weather" )
-    public WeatherInfo getWeather( @RequestParam String lat, @RequestParam String lon ) {
-        return weatherService.getWeatherForCity( lat, lon );
+    @GetMapping("/weather")
+    public WeatherInfoDTO getWeather(@RequestParam String lat, @RequestParam String lon) {
+        return weatherService.getWeatherForCity(lat, lon);
     }
 }

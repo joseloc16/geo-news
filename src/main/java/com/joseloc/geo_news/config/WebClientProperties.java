@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Getter
 @Setter
-@ConfigurationProperties( prefix = "webclient" )
+@ConfigurationProperties(prefix = "webclient")
 public class WebClientProperties {
     private String baseUrl;
     private int timeout;

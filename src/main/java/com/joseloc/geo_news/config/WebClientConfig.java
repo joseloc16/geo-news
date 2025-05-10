@@ -10,18 +10,18 @@ import reactor.netty.http.client.HttpClient;
 import java.time.Duration;
 
 @Configuration
-@EnableConfigurationProperties( WebClientProperties.class )
+@EnableConfigurationProperties(WebClientProperties.class)
 public class WebClientConfig {
 
     @Bean
-    public WebClient weatherWebClient( WebClientProperties props ) {
-        HttpClient httpClient = HttpClient.create( )
-                .responseTimeout( Duration.ofMillis( props.getTimeout( ) ) );
-        return WebClient.builder( )
-                .baseUrl( props.getBaseUrl( ) )
-                .clientConnector( new ReactorClientHttpConnector( httpClient ) )
+    public WebClient weatherWebClient(WebClientProperties props) {
+        HttpClient httpClient = HttpClient.create()
+                .responseTimeout(Duration.ofMillis(props.getTimeout()));
+        return WebClient.builder()
+                .baseUrl(props.getBaseUrl())
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
                 //.defaultHeaders(headers -> props.getHeaders().forEach(headers::add))
                 //.defaultCookies(cookies -> props.getCookies().forEach(cookies::add))
-                .build( );
+                .build();
     }
 }

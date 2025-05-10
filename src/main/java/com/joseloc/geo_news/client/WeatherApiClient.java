@@ -1,7 +1,6 @@
 package com.joseloc.geo_news.client;
 
-import com.joseloc.geo_news.config.WebClientProperties;
-import com.joseloc.geo_news.dto.WeatherInfo;
+import com.joseloc.geo_news.dto.WeatherInfoDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -14,27 +13,26 @@ import java.time.Duration;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class WeatherApiClient {
+public class WeatherApiClient implements IIWeatherApiClient {
 
     private final WebClient weatherWebClient;
-    private final WebClientProperties props;
 
-    public WeatherInfo getWeather( String latitude, String longitude ) {
+    @Override
+    public WeatherInfoDTO getWeather(String latitude, String longitude) {
+        log.info(">>> Requesting weather data for latitude: {} and longitude: {}", latitude, longitude);
 
-        log.info( ">>> Requesting weather data for latitude: {} and longitude: {}", latitude, longitude );
-
-        return weatherWebClient.get( )
-                .uri( uriBuilder -> uriBuilder
-                        .queryParam( "latitude", latitude )
-                        .queryParam( "longitude", longitude )
-                        .queryParam( "current", "temperature_2m" )
-                        .build( ) )
-                .retrieve( )
-                .bodyToMono( WeatherInfo.class )
+        return weatherWebClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .queryParam("latitude", latitude)
+                        .queryParam("longitude", longitude)
+                        .queryParam("hourly", "temperature_2m")
+                        .build())
+                .retrieve()
+                .bodyToMono(WeatherInfoDTO.class)
                 .retryWhen(
-                        Retry.backoff( 3, Duration.ofSeconds( 1 ) )
-                                .filter( throwable -> throwable instanceof WebClientRequestException )
+                        Retry.backoff(3, Duration.ofSeconds(1))
+                                .filter(throwable -> throwable instanceof WebClientRequestException)
                 )
-                .block( );
+                .block();
     }
 }
