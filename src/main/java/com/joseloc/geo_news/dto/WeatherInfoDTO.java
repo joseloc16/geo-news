@@ -21,15 +21,15 @@ public class WeatherInfoDTO {
 
     @Getter
     @Setter
-    private static class HourlyUnits {
+    public static class HourlyUnits {
         private String time;
         private String temperature_2m;
     }
 
     @Getter
     @Setter
-    private static class Hourly {
+    public static class Hourly {
         private List<String> time;
-        private List<String> temperature_2m;
+        private List<Double> temperature_2m;
     }
 }

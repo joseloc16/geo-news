@@ -26,6 +26,7 @@ public class WeatherApiClient implements IIWeatherApiClient {
                         .queryParam("latitude", latitude)
                         .queryParam("longitude", longitude)
                         .queryParam("hourly", "temperature_2m")
+                        .queryParam("forecast_days", "1")
                         .build())
                 .retrieve()
                 .bodyToMono(WeatherInfoDTO.class)
