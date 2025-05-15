@@ -1,0 +1,31 @@
+<app-header
+  [sidenavOpened]="sidenav.opened"
+  (toggleSidenav)="sidenav.toggle()">
+</app-header>
+
+<mat-sidenav-container>
+  <mat-sidenav mode="side" #sidenav class="custom-sidenav">
+    <mat-nav-list>
+      <mat-list-item routerLink="/">
+        <mat-icon>home</mat-icon>
+        Home
+      </mat-list-item>
+      <mat-list-item routerLink="/forecast">
+        <mat-icon>home</mat-icon>
+        Forecast
+      </mat-list-item>
+      <mat-list-item routerLink="/average">
+        <mat-icon>home</mat-icon>
+        Average
+      </mat-list-item>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<app-footer></app-footer>

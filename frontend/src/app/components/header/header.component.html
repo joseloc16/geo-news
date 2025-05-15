@@ -1,1 +1,7 @@
-<p>header works!</p>
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="toggleSidenav.emit()">
+    <mat-icon *ngIf="!sidenavOpened">menu</mat-icon>
+    <mat-icon *ngIf="sidenavOpened">close</mat-icon>
+  </button>
+  GEO NEWS
+</mat-toolbar>
